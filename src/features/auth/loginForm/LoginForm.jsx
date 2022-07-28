@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import React, {useState} from 'react';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom'
-import { serverUrl } from '../../variables/variables'
+import {useNavigate} from 'react-router-dom'
+import {serverUrl} from '../../variables/variables'
 
 export function LoginForm(props) {
     const [state, setState] = useState({
@@ -11,7 +11,7 @@ export function LoginForm(props) {
     })
 
     const handleChange = (e) => {
-        const { id, value } = e.target
+        const {id, value} = e.target
         setState(prevState => ({
             ...prevState,
             [id]: value
@@ -86,9 +86,11 @@ export function LoginForm(props) {
                     type="submit"
                     className="btn btn-primary"
                     onClick={handleSubmitClick}
-                >Log in</button>
+                >Log in
+                </button>
             </form>
-            <div className="alert alert-success mt-2" style={{ display: state.successMessage ? 'block' : 'none' }} role="alert">{state.successMessage} </div>
+            <div className="alert alert-success mt-2" style={{display: state.successMessage ? 'block' : 'none'}}
+                 role="alert">{state.successMessage} </div>
         </div>
     )
 }

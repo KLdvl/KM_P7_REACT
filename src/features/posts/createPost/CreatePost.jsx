@@ -14,7 +14,7 @@ export function CreatePost(props) {
     const [show, setShow] = useState(false)
 
     useEffect(() => {
-        if(!image) return
+        if (!image) return
         setImageURL(URL.createObjectURL(image))
     }, [image])
 
@@ -22,7 +22,6 @@ export function CreatePost(props) {
         setImage(...e.target.files)
         setShow(true)
     }
-
 
     const handleChange = (e) => {
         const {id, value} = e.target
@@ -45,35 +44,33 @@ export function CreatePost(props) {
                 "userId": parsedStorage.userId
             }
 
-    axios({
-        method: 'post',
-        url: `${serverUrl}/post/`,
-        mode: 'cors',
-        data: payload,
-        headers: {
-            'Authorization': `token ${parsedStorage.token}`,
-            "Content-Type": "multipart/form-data"
+            axios({
+                method: 'post',
+                url: `${serverUrl}/post/`,
+                mode: 'cors',
+                data: payload,
+                headers: {
+                    'Authorization': `token ${parsedStorage.token}`,
+                    "Content-Type": "multipart/form-data"
+                }
+            })
+                .then(res => {
+                    if (res.status === 201) {
+                        setState(prevState => ({
+                            ...prevState,
+                            'successMessage': 'Post creation successfull. Redirecting to post page'
+                        }))
+                        redirectToHome();
+                        props.showError(null)
+                    } else {
+                        props.showError("Some error occured")
+                    }
+                })
+                .catch(err => console.error(err))
+        } else {
+            props.showError('Please enter a title and content')
         }
-    })
-        .then(res => {
-            if (res.status === 201) {
-                setState(prevState => ({
-                    ...prevState,
-                    'successMessage': 'Post creation successfull. Redirecting to post page'
-                }))
-                redirectToHome();
-                props.showError(null)
-            } else {
-                props.showError("Some error occured")
-            }
-        })
-        .catch(err => console.error(err))
     }
-else
-    {
-        props.showError('Please enter a title and content')
-    }
-}
 
     const navigate = useNavigate()
     const redirectToHome = () => {
@@ -84,7 +81,6 @@ else
         e.preventDefault();
         sendDetailsToServer()
     }
-
 
     return (
         <div className="card col-12 col-lg-4 login-card mt-2 hv-center">

@@ -4,21 +4,18 @@ import axios from 'axios';
 import {PostSingle} from './postSingle/PostSingle'
 import {serverUrl} from '../../variables/variables'
 
-
 export function SinglePost() {
     const [post, getPost] = useState('')
-
     const parsedStorage = JSON.parse(localStorage.user)
     let {id} = useParams()
 
     const getOnePost = () => {
-        axios(`${serverUrl}/post/${id}`, { headers: { Authorization: `token ${parsedStorage.token}` } })
+        axios(`${serverUrl}/post/${id}`, {headers: {Authorization: `token ${parsedStorage.token}`}})
             .then(res => {
                 getPost(res.data)
             })
             .catch(err => console.error(err))
     }
-
     useEffect(() => {
         getOnePost()
     }, [])
@@ -27,7 +24,5 @@ export function SinglePost() {
         <>
             <PostSingle post={post}/>
         </>
-
-
     )
 }
