@@ -1,16 +1,15 @@
-import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, {useState, useEffect} from 'react';
+import {useParams} from 'react-router-dom';
 import axios from 'axios';
 import {PostSingle} from './postSingle/PostSingle'
-import { serverUrl } from '../../variables/variables'
+import {serverUrl} from '../../variables/variables'
 
 
-
-export function AllPosts() {
+export function SinglePost() {
     const [post, getPost] = useState('')
 
     const parsedStorage = JSON.parse(localStorage.user)
-    const id = route.params.id
+    let {id} = useParams()
 
     const getOnePost = () => {
         axios(`${serverUrl}/post/${id}`, { headers: { Authorization: `token ${parsedStorage.token}` } })
@@ -25,6 +24,10 @@ export function AllPosts() {
     }, [])
 
     return (
-        <PostSingle post={post}/>
+        <>
+            <PostSingle post={post}/>
+        </>
+
+
     )
 }

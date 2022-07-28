@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {useNavigate} from 'react-router-dom';
 import axios from 'axios';
 import {serverUrl} from '../../variables/variables'
@@ -7,9 +7,21 @@ export function CreatePost(props) {
     const [state, setState] = useState({
         title: "",
         content: "",
-        imageUrl: "",
         successMessage: null
     })
+    const [image, setImage] = useState(undefined)
+    const [imageURL, setImageURL] = useState()
+    const [show, setShow] = useState(false)
+
+    useEffect(() => {
+        if(!image) return
+        setImageURL(URL.createObjectURL(image))
+    }, [image])
+
+    const onImageChange = (e) => {
+        setImage(...e.target.files)
+        setShow(true)
+    }
 
 
     const handleChange = (e) => {
@@ -29,35 +41,20 @@ export function CreatePost(props) {
             const payload = {
                 "title": state.title,
                 "content": state.content,
-                "image": state.imageUrl,
+                "image": image,
                 "userId": parsedStorage.userId
             }
-            const formData = new FormData
-            formData.append('title', state.title)
-            formData.append('content', state.content)
-            formData.append('userId', parsedStorage.userId)
-            formData.append('image', state.imageUrl)
 
-
-    // axios({
-    //     method: 'post',
-    //     url: `${serverUrl}/post/`,
-    //     mode: 'cors',
-    //     data: formData,
-    //     headers: {
-    //         'Authorization': `token ${parsedStorage.token}`,
-    //         "Content-Type": "multipart/form-data"
-    //     }
-    // })
-                fetch(`${serverUrl}/post/`, {
-                    method: 'post',
-                    mode: 'cors',
-                    body: formData,
-                    headers: {
-                        Authorization: `token ${parsedStorage.token}`,
-                        "Content-Type": "multipart/form-data"
-                    }
-                })
+    axios({
+        method: 'post',
+        url: `${serverUrl}/post/`,
+        mode: 'cors',
+        data: payload,
+        headers: {
+            'Authorization': `token ${parsedStorage.token}`,
+            "Content-Type": "multipart/form-data"
+        }
+    })
         .then(res => {
             if (res.status === 201) {
                 setState(prevState => ({
@@ -116,11 +113,10 @@ else
                     <label>Image :</label>
                     <input
                         type="file"
-                        id="imageUrl"
                         className="form-control"
-                        value={state.imageUrl}
-                        onChange={handleChange}
+                        onChange={onImageChange}
                     />
+                    {show ? <img src={imageURL} alt="Uploaded Image"/> : null}
                 </div>
                 <button
                     type="submit"

@@ -9,8 +9,9 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import {
     BrowserRouter,
     Routes,
-    Route
+    Route, useParams
 } from "react-router-dom";
+import {SinglePost} from "./features/posts/singlePost/SinglePost";
 
 
 function App() {
@@ -19,7 +20,8 @@ function App() {
         <BrowserRouter>
             <NavBar />
             <Routes>
-                <Route path="/" element={<Home />} />
+                <Route path="/" element={<Home />}/>
+                <Route path="/:id" exact element={<SinglePost />}/>
                 <Route path="login" element={<LoginForm showError={updateErrorMessage} />} />
                 <Route path="signup" element={<SignupForm showError={updateErrorMessage} />} />
                 <Route path="createPost" element={<CreatePost showError={updateErrorMessage} />} />

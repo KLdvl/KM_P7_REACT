@@ -1,8 +1,8 @@
+import { Link, Navigate } from 'react-router-dom'
 
-export function PostCard(props) {
+export function PostCard({posts}) {
 
-    const displayPosts = (props) => {
-        const { posts } = props;
+    const displayPosts = (posts) => {
 
         if (posts.length > 0) {
             return (
@@ -11,7 +11,9 @@ export function PostCard(props) {
                         <div className='post' key={post._id}>
                             <h3 className='post__title'>{post.title}</h3>
                             <p className='post__body'>{post.content}</p>
-                            <button>Click to read more</button>
+                            <Link to={post._id}>
+                                <button>Click to read more</button>
+                            </Link>
                         </div>
                     )
                 })
@@ -23,7 +25,7 @@ export function PostCard(props) {
 
     return (
         <>
-            {displayPosts(props)}
+            {displayPosts(posts)}
         </>
     )
 }

@@ -2,21 +2,18 @@
 export function PostSingle(props) {
 
     const displayPost = (props) => {
-        const { menu, post } = props;
+        const { post } = props;
 
-        if (post.length > 0) {
+        if (post) {
             return (
-                post.map((post, index) => {
-                    return (
                         <div className='post' key={post._id}>
                             <h3 className='post__title'>{post.title}</h3>
                             <p className='post__body'>{post.content}</p>
-                            <button>Click to read more</button>
+                            <img src={post.imageUrl}/>
                         </div>
                     )
-                })
-            )
-        } else {
+                }
+        else {
             return (<h3>No posts yet</h3>)
         }
     }
