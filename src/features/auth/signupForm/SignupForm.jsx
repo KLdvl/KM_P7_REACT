@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { serverUrl } from '../../variables/variables'
 
 export function SignupForm(props) {
     const [state, setState] = useState({
@@ -17,7 +18,6 @@ export function SignupForm(props) {
         }))
     }
 
-    const serverUrl = "https://backend-groupomania.kevinmas.repl.co/api"
     const sendDetailsToServer = () => {
         if (state.email.length && state.password.length) {
             props.showError(null);
@@ -27,7 +27,13 @@ export function SignupForm(props) {
                 "password": state.password
             }
 
-            axios.post(`${serverUrl}/auth/signup`, payload)
+            axios({
+                method: 'post',
+                url: `${serverUrl}/auth/signup`,
+                withCredentials: false,
+                mode: 'cors',
+                data: payload
+            })
                 .then(res => {
                     if (res.status === 201) {
                         setState(prevState => ({
@@ -37,7 +43,8 @@ export function SignupForm(props) {
                         localStorage.setItem('user', JSON.stringify(res.data))
                         redirectToHome();
                         props.showError(null)
-                    } else {
+                    }
+                    else {
                         props.showError("Some error occured")
                     }
                 })

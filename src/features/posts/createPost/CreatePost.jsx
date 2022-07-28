@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, {useState} from 'react';
+import {useNavigate} from 'react-router-dom';
 import axios from 'axios';
+import {serverUrl} from '../../variables/variables'
 
 export function CreatePost(props) {
     const [state, setState] = useState({
@@ -10,43 +11,72 @@ export function CreatePost(props) {
         successMessage: null
     })
 
+
     const handleChange = (e) => {
-        const { id, value } = e.target
+        const {id, value} = e.target
         setState(prevState => ({
             ...prevState,
             [id]: value
         }))
     }
 
-    const serverUrl = "https://backend-groupomania.kevinmas.repl.co/api"
     const sendDetailsToServer = () => {
-        if (state.title.length && state.content.length && state.imageUrl.length) {
+        if (state.title.length && state.content.length) {
             props.showError(null);
+
+            const parsedStorage = JSON.parse(localStorage.user)
 
             const payload = {
                 "title": state.title,
                 "content": state.content,
-                "imageUrl": state.imageUrl
+                "image": state.imageUrl,
+                "userId": parsedStorage.userId
             }
+            const formData = new FormData
+            formData.append('title', state.title)
+            formData.append('content', state.content)
+            formData.append('userId', parsedStorage.userId)
+            formData.append('image', state.imageUrl)
 
-            axios.post(`${serverUrl}/post`, payload)
-                .then(res => {
-                    if (res.status === 201) {
-                        setState(prevState => ({
-                            ...prevState,
-                            'successMessage': 'Registration successfull. Redirecting to post page'
-                        }))
-                        redirectToHome();
-                        props.showError(null)
-                    } else {
-                        props.showError("Some error occured")
+
+    // axios({
+    //     method: 'post',
+    //     url: `${serverUrl}/post/`,
+    //     mode: 'cors',
+    //     data: formData,
+    //     headers: {
+    //         'Authorization': `token ${parsedStorage.token}`,
+    //         "Content-Type": "multipart/form-data"
+    //     }
+    // })
+                fetch(`${serverUrl}/post/`, {
+                    method: 'post',
+                    mode: 'cors',
+                    body: formData,
+                    headers: {
+                        Authorization: `token ${parsedStorage.token}`,
+                        "Content-Type": "multipart/form-data"
                     }
                 })
-                .catch(err => console.error(err))
-        } else {
-            props.showError('Please enter a title and content')
-        }
+        .then(res => {
+            if (res.status === 201) {
+                setState(prevState => ({
+                    ...prevState,
+                    'successMessage': 'Post creation successfull. Redirecting to post page'
+                }))
+                redirectToHome();
+                props.showError(null)
+            } else {
+                props.showError("Some error occured")
+            }
+        })
+        .catch(err => console.error(err))
     }
+else
+    {
+        props.showError('Please enter a title and content')
+    }
+}
 
     const navigate = useNavigate()
     const redirectToHome = () => {
@@ -96,9 +126,11 @@ export function CreatePost(props) {
                     type="submit"
                     className="btn btn-primary"
                     onClick={handleSubmitClick}
-                >Publish your post</button>
+                >Publish your post
+                </button>
             </form>
-            <div className="alert alert-success mt-2" style={{ display: state.successMessage ? 'block' : 'none' }} role="alert">{state.successMessage}</div>
+            <div className="alert alert-success mt-2" style={{display: state.successMessage ? 'block' : 'none'}}
+                 role="alert">{state.successMessage}</div>
         </div>
     )
 }

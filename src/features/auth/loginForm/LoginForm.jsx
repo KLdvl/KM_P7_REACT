@@ -1,25 +1,25 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom'
+import { serverUrl } from '../../variables/variables'
 
 export function LoginForm(props) {
-    const [ state, setState ] = useState({
+    const [state, setState] = useState({
         email: "",
         password: "",
         successMessage: null
     })
 
     const handleChange = (e) => {
-        const {id, value} = e.target
+        const { id, value } = e.target
         setState(prevState => ({
             ...prevState,
-            [id] : value
+            [id]: value
         }))
     }
 
-    const serverUrl = "https://backend-groupomania.kevinmas.repl.co/api"
     const sendDetailsToServer = () => {
-        if(state.email.length && state.password.length) {
+        if (state.email.length && state.password.length) {
             props.showError(null);
 
             const payload = {
@@ -29,10 +29,10 @@ export function LoginForm(props) {
 
             axios.post(`${serverUrl}/auth/login`, payload)
                 .then(res => {
-                    if(res.status === 200) {
+                    if (res.status === 200) {
                         setState(prevState => ({
                             ...prevState,
-                            'successMessage' : 'Login successfull. Redirecting to post page'
+                            'successMessage': 'Login successfull. Redirecting to post page'
                         }))
                         localStorage.setItem('user', JSON.stringify(res.data))
                         redirectToHome();
@@ -57,7 +57,7 @@ export function LoginForm(props) {
         sendDetailsToServer()
     }
 
-    return(
+    return (
         <div className="card col-12 col-lg-4 login-card mt-2 hv-center">
             <form>
                 <div className="form-group text-left">
@@ -88,7 +88,7 @@ export function LoginForm(props) {
                     onClick={handleSubmitClick}
                 >Log in</button>
             </form>
-            <div className="alert alert-success mt-2" style={{display: state.successMessage ? 'block' : 'none'}} role="alert">{state.successMessage} </div>
+            <div className="alert alert-success mt-2" style={{ display: state.successMessage ? 'block' : 'none' }} role="alert">{state.successMessage} </div>
         </div>
     )
 }
