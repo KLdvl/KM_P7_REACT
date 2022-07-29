@@ -9,7 +9,7 @@ export function PostSingle(props) {
     let {id} = useParams()
     const navigate = useNavigate()
     const [isShown, setIsShown] = useState(false)
-    const handleClick = (e) => {
+    const handleClick = () => {
         setIsShown(current => !current)
     }
 

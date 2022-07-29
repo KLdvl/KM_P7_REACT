@@ -69,8 +69,8 @@ export function UpdatePost(props) {
             }
 
             axios({
-                method: 'post',
-                url: `${serverUrl}/post/`,
+                method: 'put',
+                url: `${serverUrl}/post/${props.idParams}`,
                 mode: 'cors',
                 data: payload,
                 headers: {
@@ -79,10 +79,10 @@ export function UpdatePost(props) {
                 }
             })
                 .then(res => {
-                    if (res.status === 201) {
+                    if (res.status === 200) {
                         setState(prevState => ({
                             ...prevState,
-                            'successMessage': 'Post creation successfull. Redirecting to post page'
+                            'successMessage': 'Post modification successfull. Redirecting to post page'
                         }))
                         redirectToHome();
                         props.showError(null)
