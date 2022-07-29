@@ -43,11 +43,15 @@ export function UpdatePost(props) {
                 'Authorization': `token ${parsedStorage.token}`
             }
         })
-            .then(res => setState(prevState => ({
-                ...prevState,
-                title: res.data.title,
-                content: res.data.content,
-            })))
+            .then(res => {
+                console.log(res.data)
+                setState(prevState => ({
+                    ...prevState,
+                    title: res.data.title,
+                    content: res.data.content,
+                }))
+            }
+            )
     }
     useEffect(()=> {
         getPostData()
@@ -138,7 +142,7 @@ export function UpdatePost(props) {
                     type="submit"
                     className="btn btn-primary"
                     onClick={handleSubmitClick}
-                >Publish your post
+                >Update your post
                 </button>
             </form>
             <div className="alert alert-success mt-2" style={{display: state.successMessage ? 'block' : 'none'}}
