@@ -9,9 +9,9 @@ export function PostCard({posts}) {
             return (
                 posts.map((post) => {
                     return (
-                        <div className='post' key={post._id}>
+                        <div className='post border container mb-3' key={post._id}>
                             <h3 className='post__title'>{post.title}</h3>
-                            <p className='post__body'>{post.content}</p>
+                            <p style={{whiteSpace: 'pre-wrap'}} className='post__body'>{post.content}</p>
                             <img className="miniature" src={post.imageUrl} alt="post"/>
                             <Link to={post._id}>
                                 <button>Click to read more</button>

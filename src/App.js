@@ -12,6 +12,7 @@ import {
     Route, useParams
 } from "react-router-dom";
 import {SinglePost} from "./features/posts/singlePost/SinglePost";
+import {UpdatePost} from "./features/posts/updatePost/UpdatePost";
 
 function App() {
     const [errorMessage, updateErrorMessage] = useState(null)
@@ -21,6 +22,7 @@ function App() {
             <Routes>
                 <Route path="/" element={<Home/>}/>
                 <Route path="/:id" element={<SinglePost/>}/>
+                <Route path="/:id" element={<UpdatePost/>}/>
                 <Route path="login" element={<LoginForm showError={updateErrorMessage}/>}/>
                 <Route path="signup" element={<SignupForm showError={updateErrorMessage}/>}/>
                 <Route path="createPost" element={<CreatePost showError={updateErrorMessage}/>}/>

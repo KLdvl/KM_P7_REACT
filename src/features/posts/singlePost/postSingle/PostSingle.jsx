@@ -1,11 +1,17 @@
+import React, {useState} from 'react'
 import './postSingle.scss'
 import {Link, useParams, useNavigate} from 'react-router-dom'
 import axios from 'axios'
 import {serverUrl} from "../../../variables/variables";
+import {UpdatePost} from "../../updatePost/UpdatePost";
 
 export function PostSingle(props) {
     let {id} = useParams()
     const navigate = useNavigate()
+    const [isShown, setIsShown] = useState(false)
+    const handleClick = (e) => {
+        setIsShown(current => !current)
+    }
 
     const displayPost = (props) => {
         const {post} = props;
@@ -27,8 +33,9 @@ export function PostSingle(props) {
                     <h3 className='post__title'>{post.title}</h3>
                     <p className='post__body'>{post.content}</p>
                     <img className="miniature" src={post.imageUrl}/>
+                    {isShown && <UpdatePost idParams={id}/>}
                     <div>
-                        <button>EDIT</button>
+                        <button onClick={handleClick}>EDIT</button>
                         <button onClick={deletePost}>DELETE</button>
                         <Link to={"/"}>
                             <button>GO BACK</button>
