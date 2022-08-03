@@ -8,10 +8,11 @@ import {LikeInPost} from "../likePost/LikeInPost";
 import {DislikeInPost} from "../likePost/DislikeInPost";
 
 export function SinglePost() {
+
     let {id} = useParams()
     const parsedStorage = JSON.parse(localStorage.user)
 
-    const [post, getPost] = useState({})
+    const [post, getPost] = useState()
     const [isShown, setIsShown] = useState(false)
 
     const getOnePost = () => {
@@ -21,9 +22,10 @@ export function SinglePost() {
             })
             .catch(err => console.error(err))
     }
+
     useEffect(() => {
         getOnePost()
-    },[])
+    }, [])
 
     const handleClick = () => {
         setIsShown(current => !current)

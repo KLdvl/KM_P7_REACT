@@ -8,18 +8,10 @@ export function DislikeInPost({post}) {
     let {id} = useParams()
     const parsedStorage = JSON.parse(localStorage.user)
 
-    let payload = {}
-    if(post.usersDisliked.includes(parsedStorage.userId)) {
-        payload = {
-            userId: parsedStorage.userId,
-            like: 0
-        }
-    } else {
-        payload = {
-            userId: parsedStorage.userId,
-            like: -1
-        }
-    }
+    const payload = post.usersDisliked.includes(parsedStorage.userId) ?
+        {userId: parsedStorage.userId, like: 0} :
+        {userId: parsedStorage.userId, like: -1}
+
     const handleDislike = () => {
         axios({
             method: 'post',
