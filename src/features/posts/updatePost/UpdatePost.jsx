@@ -1,10 +1,11 @@
 import React, {useState, useEffect} from 'react';
-import {useNavigate} from 'react-router-dom';
+import {useParams} from 'react-router-dom';
 import axios from 'axios';
 import {serverUrl} from '../../variables/variables'
 
-export function UpdatePost(props) {
+export function UpdatePost() {
     const parsedStorage = JSON.parse(localStorage.user)
+    let {id} = useParams()
 
     const [state, setState] = useState({
         title: "",
@@ -37,7 +38,7 @@ export function UpdatePost(props) {
     const getPostData = () => {
         axios({
             method: 'get',
-            url: `${serverUrl}/post/${props.idParams}`,
+            url: `${serverUrl}/post/${id}`,
             mode: 'cors',
             headers: {
                 'Authorization': `token ${parsedStorage.token}`
@@ -58,7 +59,6 @@ export function UpdatePost(props) {
 
     const sendDetailsToServer = () => {
         if (state.title.length && state.content.length) {
-            props.showError(null);
 
             const payload = {
                 "title": state.title,
@@ -69,35 +69,17 @@ export function UpdatePost(props) {
 
             axios({
                 method: 'put',
-                url: `${serverUrl}/post/${props.idParams}`,
+                url: `${serverUrl}/post/${id}`,
                 mode: 'cors',
-                data: payload,
                 headers: {
                     'Authorization': `token ${parsedStorage.token}`,
                     "Content-Type": "multipart/form-data"
-                }
+                },
+                data: payload,
             })
-                .then(res => {
-                    if (res.status === 200) {
-                        setState(prevState => ({
-                            ...prevState,
-                            'successMessage': 'Post modification successfull. Redirecting to post page'
-                        }))
-                        redirectToHome();
-                        props.showError(null)
-                    } else {
-                        props.showError("Some error occured")
-                    }
-                })
-                .catch(err => console.error(err))
-        } else {
-            props.showError('Please enter a title and content')
-        }
-    }
+                .then(window.location = `/${id}`)
 
-    const navigate = useNavigate()
-    const redirectToHome = () => {
-        navigate('/')
+        }
     }
 
     const handleSubmitClick = (e) => {
@@ -144,8 +126,6 @@ export function UpdatePost(props) {
                 >Update your post
                 </button>
             </form>
-            <div className="alert alert-success mt-2" style={{display: state.successMessage ? 'block' : 'none'}}
-                 role="alert">{state.successMessage}</div>
         </div>
     )
 }

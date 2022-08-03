@@ -1,9 +1,11 @@
-import React from 'react';
+import React, {useState} from 'react';
 import axios from 'axios';
 import {serverUrl} from "../../variables/variables";
 import {useParams} from 'react-router-dom'
 
 export function LikeInPost({post}) {
+    // console.log(JSON.parse(JSON.stringify(post.likes)))
+    const [like, setLike] = useState(JSON.parse(JSON.stringify(post.likes)))
 
     let {id} = useParams()
     const parsedStorage = JSON.parse(localStorage.user)
@@ -26,17 +28,19 @@ export function LikeInPost({post}) {
             url: `${serverUrl}/post/${id}/like`,
             mode: 'cors',
             headers: {
-                'Authorization': `token ${parsedStorage.token}`
+                Authorization: `token ${parsedStorage.token}`
             },
             data: payload
         })
-            .then(window.location = `/${id}`)
+            .then(res => setLike(res.data.likes)
+                // window.location = `/${id}`
+    )
 
     }
     return (
         <>
             <button onClick={handleLike} className="btn btn-outline-success">Like</button>
-            <p>{post.likes}</p>
+            <p>{like}</p>
         </>
     )
 }

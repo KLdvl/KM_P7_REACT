@@ -2,8 +2,12 @@ import React, {useState} from 'react';
 import axios from 'axios';
 import {useNavigate} from 'react-router-dom'
 import {serverUrl} from '../../variables/variables'
+import {useDispatch} from 'react-redux'
+import { setLogStatus } from "../../socialNetworkSlice";
 
-export function LoginForm(props) {
+export function LoginForm({showError}) {
+    const dispatch = useDispatch()
+
     const [state, setState] = useState({
         email: "",
         password: "",
@@ -20,7 +24,7 @@ export function LoginForm(props) {
 
     const sendDetailsToServer = () => {
         if (state.email.length && state.password.length) {
-            props.showError(null);
+            showError(null);
 
             const payload = {
                 "email": state.email,
@@ -36,14 +40,14 @@ export function LoginForm(props) {
                         }))
                         localStorage.setItem('user', JSON.stringify(res.data))
                         redirectToHome();
-                        props.showError(null)
+                        showError(null)
                     } else {
-                        props.showError("Some error occured")
+                        showError("Some error occured")
                     }
                 })
                 .catch(err => console.error(err))
         } else {
-            props.showError('Please enter a valid email and password')
+            showError('Please enter a valid email and password')
         }
     }
 
@@ -55,6 +59,7 @@ export function LoginForm(props) {
     const handleSubmitClick = (e) => {
         e.preventDefault();
         sendDetailsToServer()
+        dispatch(setLogStatus(true))
     }
 
     return (

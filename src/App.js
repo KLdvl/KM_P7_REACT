@@ -9,10 +9,10 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import {
     BrowserRouter,
     Routes,
-    Route, useParams
+    Route,
 } from "react-router-dom";
-import {SinglePost} from "./features/posts/singlePost/SinglePost";
 import {UpdatePost} from "./features/posts/updatePost/UpdatePost";
+import {SinglePost} from "./features/posts/singlePost/SinglePost";
 
 function App() {
     const [errorMessage, updateErrorMessage] = useState(null)

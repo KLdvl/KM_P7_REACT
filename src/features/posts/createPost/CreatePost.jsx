@@ -9,6 +9,7 @@ export function CreatePost(props) {
         content: "",
         successMessage: null
     })
+
     const [image, setImage] = useState(undefined)
     const [imageURL, setImageURL] = useState()
     const [show, setShow] = useState(false)
@@ -112,7 +113,7 @@ export function CreatePost(props) {
                         className="form-control"
                         onChange={onImageChange}
                     />
-                    {show ? <img src={imageURL} alt="Uploaded Image"/> : null}
+                    {show ? <img src={imageURL} alt=""/> : null}
                 </div>
                 <button
                     type="submit"
