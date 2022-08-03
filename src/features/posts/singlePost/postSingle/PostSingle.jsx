@@ -4,6 +4,8 @@ import {Link, useParams, useNavigate} from 'react-router-dom'
 import axios from 'axios'
 import {serverUrl} from "../../../variables/variables";
 import {UpdatePost} from "../../updatePost/UpdatePost";
+import {LikeInPost} from "../../likePost/LikeInPost";
+import {DislikeInPost} from "../../likePost/DislikeInPost";
 
 export function PostSingle(props) {
     let {id} = useParams()
@@ -27,18 +29,22 @@ export function PostSingle(props) {
             })
                 .then(res => navigate('/'))
         }
-        if(post) {
+        if (post) {
             return (
                 <div className='post' key={post._id}>
                     <h3 className='post__title'>{post.title}</h3>
                     <p className='post__body'>{post.content}</p>
-                    <img className="miniature" src={post.imageUrl}/>
+                    <img className="miniature" src={post.imageUrl} alt=""/>
+                    <div className="container mt-2 mb-2">
+                        <LikeInPost post={post}/>
+                        <DislikeInPost post={post}/>
+                    </div>
                     {isShown && <UpdatePost idParams={id}/>}
                     <div>
-                        <button onClick={handleClick}>EDIT</button>
-                        <button onClick={deletePost}>DELETE</button>
+                        <button className="btn btn-outline-info" onClick={handleClick}>EDIT</button>
+                        <button className="btn btn-outline-warning" onClick={deletePost}>DELETE</button>
                         <Link to={"/"}>
-                            <button>GO BACK</button>
+                            <button className="btn btn-outline-secondary" >GO BACK</button>
                         </Link>
                     </div>
                 </div>

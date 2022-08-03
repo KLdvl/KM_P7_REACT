@@ -44,7 +44,6 @@ export function UpdatePost(props) {
             }
         })
             .then(res => {
-                console.log(res.data)
                 setState(prevState => ({
                     ...prevState,
                     title: res.data.title,
@@ -136,7 +135,7 @@ export function UpdatePost(props) {
                         className="form-control"
                         onChange={onImageChange}
                     />
-                    {show ? <img src={imageURL} alt="Uploaded Image"/> : null}
+                    {show ? <img src={imageURL} alt=""/> : null}
                 </div>
                 <button
                     type="submit"
